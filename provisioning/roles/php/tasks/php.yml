@@ -1,0 +1,46 @@
+---
+- name: add PHP repository from PPA
+  apt_repository:
+    repo: ppa:ondrej/php
+    update_cache: true
+
+- name: install PHP
+  apt:
+    name: php{{ php_version }}
+
+- name: remove apache2
+  apt:
+    name: apache2
+    state: absent
+
+- name: install Mbstring PHP Extension
+  apt:
+    name: php{{ php_version }}-mbstring
+
+- name: install XML PHP Extension
+  apt:
+    name: php{{ php_version }}-xml
+
+- name: install MySQL PHP Extension
+  apt:
+    name: php{{ php_version }}-mysql
+
+- name: install Zip PHP Extension
+  apt:
+    name: php{{ php_version }}-zip
+
+- name: install cURL PHP Extension
+  apt:
+    name: php{{ php_version }}-curl
+
+- name: install PHP FPM
+  apt:
+    name: php{{ php_version}}-fpm
+- name: install PHP pear
+  apt:
+    name: php-pear
+  sudo: true
+- name: install PHP dev
+  apt:
+    name: php{{ php_version}}-dev
+  sudo: true

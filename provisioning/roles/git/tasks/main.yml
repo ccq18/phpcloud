@@ -1,0 +1,12 @@
+---
+- name: Add Git repository from PPA
+  apt_repository:
+    repo: ppa:git-core/ppa
+    update_cache: true
+
+- name: Install Git
+  apt:
+    name: git
+- name: git restart
+  shell:  eval `ssh-agent`;ssh-add {{ application_user_home }}/.ssh/id_rsa
+  ignore_errors: yes

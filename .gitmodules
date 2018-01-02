@@ -1,0 +1,3 @@
+[submodule "provisioning"]
+	path = provisioning
+	url = git@gitee.com:ccq18/provisioning.git

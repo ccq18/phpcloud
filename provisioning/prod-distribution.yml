@@ -1,0 +1,7 @@
+---
+- hosts: webservers
+#  user: vagrant
+  user: root
+  roles:
+    - distribution
+    - reload

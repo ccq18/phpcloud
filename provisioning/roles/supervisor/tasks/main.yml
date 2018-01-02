@@ -1,0 +1,39 @@
+#安装 supervisord 并配置
+---
+- name: install pip
+  apt:
+    name: python-pip
+
+- name: pip install virtualenv
+  command: pip install virtualenv
+
+- name: ensure supervisor group
+  group:
+    name: "{{ application_group }}"
+
+- name: ensure supervisor user
+  user:
+    name: "{{ application_user }}"
+    group: "{{ application_group }}"
+
+- name: ensure directory for supervisor
+  file:
+    path: "{{ supervisor_path }}"
+    state: directory
+    owner: "{{ application_user }}"
+    group: "{{ application_group }}"
+
+- name: install supervisor
+  pip:
+    name: supervisor
+    virtualenv: "{{ supervisor_path }}/venv"
+  become: true
+  become_user: "{{ application_user }}"
+
+- name: setup supervisord config file
+  template:
+    src: supervisord.conf.j2
+    dest: "{{ supervisor_path }}/supervisord.conf"
+    backup: true
+    owner: "{{ application_user }}"
+    group: "{{ application_group }}"

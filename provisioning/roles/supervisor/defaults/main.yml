@@ -1,0 +1,8 @@
+---
+application_user: aijihui
+application_group: aijihui
+application_path: /data/aijihui/release
+
+supervisor_path: /data/supervisor
+
+queue_worker_logfile: "{{ application_path }}/storage/logs/worker.log"

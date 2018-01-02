@@ -1,0 +1,26 @@
+#去除nginx default 配置nginx站点
+- name: Disable Default Config
+  file: dest=/etc/nginx/sites-enabled/default state=absent
+  notify:
+    - Reload Nginx
+- name: Disable Default Config
+  file: dest=/etc/nginx/sites-available/default state=absent
+  notify:
+    - Reload Nginx
+- name: Replace Parent Nginx Config
+  template: src=templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf  owner=root group=root mode=644 backup=yes
+  notify: 
+    - Reload Nginx   
+
+- name: Add Site Config
+  when: nginxinstalled|success
+  template: src=serve.j2 dest=/etc/nginx/sites-enabled/{{ domain }} owner=root group=root
+
+- name: Add Site Config
+  when: nginxinstalled|success
+  template: src=url.j2 dest=/etc/nginx/sites-enabled/{{ url_domain }} owner=root group=root
+#- name: Enable Site Config
+#  file: src=/etc/nginx/sites-available/{{ domain }} dest=/etc/nginx/sites-enabled/{{ domain }} state=link
+#  notify:
+#    - Reload Nginx
+

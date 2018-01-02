@@ -1,0 +1,63 @@
+---
+- name: git restart
+  shell:  eval `ssh-agent`;ssh-add {{ application_user_home }}/.ssh/id_rsa
+  ignore_errors: yes
+- name: check application path exist
+  stat:
+    path: "{{ new_application_path }}"
+  register: code_stat
+- name: make new application path
+  file: "dest={{ new_application_path }} state=directory owner={{ application_user }} group={{ application_group }}"
+  sudo: true
+- name: git conifg
+  shell: "git config --global core.compression 0 & git config --global core.packedGitLimit 768m & git config --global core.packedGitWindowSize 768m & git config --global pack.deltaCacheSize 768m & git config  --global pack.packSizeLimit 768m & git config --global pack.windowMemory 768m  "
+  sudo: true
+- name: distribute code with git
+  git:
+   accept_hostkey=yes update=yes force=yes  dest={{ new_application_path }}   repo={{ repository }} update=yes version=master depth=1
+  when: not code_stat.stat.exists
+  become: true
+  become_user: "{{ application_user }}"
+#  git:
+#    repo: {{ repository }}
+#    dest: "{{ new_application_path }}"
+#    version: master
+#    accept_hostkey: true
+- name: chmod storage
+  shell: chmod -R 777 storage
+  args:
+    chdir: "{{ new_application_path }}"
+  when: not code_stat.stat.exists
+  sudo: true
+- name: composer install
+  shell: "php -d memory_limit=1G  /usr/local/bin/composer install"
+  args:
+    chdir: "{{ new_application_path }}"
+  when: not code_stat.stat.exists
+  become: true
+  become_user: "{{ application_user }}"
+
+- name: setup application env file
+  template:
+    src: templates/env.j2
+    dest: "{{ new_application_path }}/.env"
+  become: true
+  become_user: "{{ application_user }}"
+
+- name: run migrations
+  shell: php artisan migrate --force
+  args:
+    chdir: "{{ new_application_path }}"
+  become: true
+  become_user: "{{ application_user }}"
+  when: jobserver
+
+- name: link code to current application version
+  file:
+    path: "{{ application_path }}"
+    src: "{{ new_application_path }}"
+    state: link
+    owner: "{{ application_user }}"
+    group: "{{ application_group }}"
+  register: release_stat
+  sudo: true

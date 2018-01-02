@@ -1,0 +1,8 @@
+
+- name: stop supervisord
+  shell: "{{ supervisor_path }}/venv/bin/supervisorctl  -c {{ supervisor_path }}/supervisord.conf  stop all"
+  args:
+    chdir: "{{ supervisor_path }}"
+  sudo: true
+
+

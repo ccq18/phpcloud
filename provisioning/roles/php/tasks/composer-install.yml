@@ -1,0 +1,10 @@
+---
+- name: composer installer
+  shell: curl -sS https://install.phpcomposer.com/installer | php
+  args:
+    chdir: "~"
+  sudo: true
+- name: mv composer to bin
+  shell: mv ~/composer.phar /usr/local/bin/composer
+  sudo: true
+

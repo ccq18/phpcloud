@@ -1,0 +1,15 @@
+[webservers]
+118.190.140.103
+[storage]
+120.27.102.93
+#vagrant ansible_ssh_host=127.0.0.1  ansible_ssh_port=2222
+#[vagrant0]
+#vagrant ansible_ssh_host=127.0.0.1  ansible_ssh_port=2222
+#[vagrants]
+#vagrant1 ansible_ssh_host=127.0.0.1  ansible_ssh_port=2222
+#vagrant2 ansible_ssh_host=127.0.0.1  ansible_ssh_port=2201
+#vagrant3 ansible_ssh_host=127.0.0.1  ansible_ssh_port=2202
+[web]
+[mysql]
+[redis]
+[lb]

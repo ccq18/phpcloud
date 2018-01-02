@@ -1,0 +1,23 @@
+---
+- name: install redis server
+  apt:
+    name: redis-server
+
+- name: ensure redis server service
+  service:
+    name: redis-server
+    state: started
+    enabled: true
+
+- name: setup redis config file
+  copy:
+    dest: "/etc/redis/redis.conf"
+    src: redis.conf
+    backup: true
+  register: redis_config
+
+- name: restart redis service if config file changed
+  service:
+    name: redis-server
+    state: restarted
+  when: redis_config.changed
