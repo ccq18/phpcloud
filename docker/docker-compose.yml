@@ -30,7 +30,7 @@ services:
   nginx:
     build: nginx
     ports:
-      - "8012:80"
+      - "${PORT}:80"
     volumes:
       - ${APPLICATION}:/www
     networks:
