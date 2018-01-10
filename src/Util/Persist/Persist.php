@@ -10,6 +10,7 @@ use Util\Fluent;
 
 abstract class Persist extends Fluent
 {
+    use Divers\Redis;
     /**
      * @var Persist[]
      */
@@ -19,17 +20,6 @@ abstract class Persist extends Fluent
     protected $_baseAttributes = null;
     static $_prefix = 'persist';
 
-    public static function redis()
-    {
-        return app('redis.connection');
-    }
-
-    public static function saveAll()
-    {
-        foreach (Persist::$_objs as $v) {
-            $v->save();
-        }
-    }
 
     public function __construct($key, $attributes = [], $persisted = false, $autoSave = true)
     {
@@ -48,8 +38,6 @@ abstract class Persist extends Fluent
     {
         $structure = $this->structure();
         $this->attributes = array_merge($structure, $attributes);
-
-
     }
 
     public function only()
@@ -66,21 +54,6 @@ abstract class Persist extends Fluent
         return [];
     }
 
-    /**
-     * @param $key
-     * @return null|static
-     */
-    public static function first($key)
-    {
-        $v = static::redis()->hget(static::getPersistKey(), $key);
-        if (empty($v)) {
-            return null;
-        }
-
-        return static::getObj($key, $v, true);
-    }
-
-
     public static function firstOrNew($key)
     {
         $v = static::first($key);
@@ -89,24 +62,6 @@ abstract class Persist extends Fluent
         }
 
         return $v;
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public static function all()
-    {
-        $rs = collect();
-
-        $data = static::redis()->hgetall(static::getPersistKey());
-        if (empty($data)) {
-            return $rs;
-        }
-        foreach ($data as $k => $v) {
-            $rs->push(static::getObj($k, $v, true));
-        }
-
-        return $rs;
     }
 
     public static function getObj($k, $data, $persisted)
@@ -129,23 +84,6 @@ abstract class Persist extends Fluent
         $this->attributes = array_merge($this->attributes, $data);
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function save()
-    {
-        if (empty($this->_key)) {
-            throw new \Exception('key not exist');
-        }
-        if (empty(static::$_table)) {
-            throw new \Exception('table not exist');
-        }
-        //若数据无变化则不存储
-        if (json_encode($this->attributes) == json_encode($this->_baseAttributes)) {
-            return;
-        }
-        static::redis()->hset($this->getPersistKey(), $this->_key, json_encode($this->attributes));
-        $this->_baseAttributes = $this->attributes;
-    }
+
 
 }

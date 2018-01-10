@@ -1,0 +1,2 @@
+#!/bin/sh
+docker exec -it phpcloud_php  php /www/artisan $*

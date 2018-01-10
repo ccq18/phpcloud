@@ -1,6 +1,0 @@
----
- - hosts: storage
-   become: yes
-   user: root
-   roles:
-    - redis

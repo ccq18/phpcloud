@@ -1,6 +1,0 @@
----
-- hosts: webservers
-#  user: vagrant
-  user: root
-  roles:
-    - stop-task

@@ -1,8 +1,0 @@
----
-- name: determine if composer installed
-  stat:
-    path: /usr/local/bin/composer
-  register: composer_state
-
-- include: composer-install.yml
-  when: not composer_state.stat.exists

@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        \App\Console\Commands\HealthCommand::class
+        \App\Console\Commands\HealthCommand::class,
+        \App\Console\Commands\ServeCommand::class,
     ];
 
     /**
