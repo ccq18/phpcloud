@@ -1,24 +1,14 @@
 version: '3'
 services:
   cli:
-    build:
-      context: cli
-      args:
-        PHP_OTHER_EXT:
-        PHP_CORE_EXT:
-        PHP_INSTALL_GD:
+    image: "ccq18/php-cli:7.1"
     volumes:
       - ${APPLICATION}:/www
     networks:
       - frontend
       - backend
-  php:
-    build:
-      context: php
-      args:
-        PHP_OTHER_EXT:
-        PHP_CORE_EXT:
-        PHP_INSTALL_GD:
+  fpm:
+    image: "ccq18/php-fpm:7.1"
     volumes:
       - ${APPLICATION}:/www
 #      - ../:/www
@@ -28,7 +18,7 @@ services:
       - frontend
       - backend
   nginx:
-    build: nginx
+    image: "ccq18/nginx"
     ports:
       - "${PORT}:80"
     volumes:
@@ -38,7 +28,7 @@ services:
       - backend
 networks:
   frontend:
-    driver: "bridge"
+    driver: ""
   backend:
     driver: "bridge"
 
