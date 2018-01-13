@@ -19,6 +19,7 @@ services:
       - backend
   nginx:
     image: "ccq18/nginx"
+#    build: nginx
     ports:
       - "${PORT}:80"
     volumes:
@@ -28,7 +29,7 @@ services:
       - backend
 networks:
   frontend:
-    driver: ""
+    driver: "bridge"
   backend:
     driver: "bridge"
 
