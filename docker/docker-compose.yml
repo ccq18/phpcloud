@@ -15,7 +15,7 @@ services:
   nginx:
     image: "ccq18/nginx"
     ports:
-      - "${PORT}:8001"
+      - "${PORT}:80"
     volumes:
       - ${APPLICATION}:/www
       - ${APPLICATION}/storage/logs:/log/nginx
