@@ -21,7 +21,7 @@ services:
     image: "ccq18/nginx"
 #    build: nginx
     ports:
-      - "${PORT}:80"
+      - "${PORT}:8001"
     volumes:
       - ${APPLICATION}:/www
     networks:
