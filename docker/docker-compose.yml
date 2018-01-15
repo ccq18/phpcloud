@@ -6,31 +6,40 @@ services:
       - ${APPLICATION}:/www
     networks:
       - frontend
-      - backend
   fpm:
     image: "ccq18/php-fpm:7.1"
     volumes:
       - ${APPLICATION}:/www
-#      - ../:/www
-#      - ./conf:/usr/local/etc/php
-#      - ./logs:/phplogs
     networks:
       - frontend
-      - backend
   nginx:
     image: "ccq18/nginx"
-#    build: nginx
     ports:
       - "${PORT}:8001"
     volumes:
       - ${APPLICATION}:/www
+      - ${APPLICATION}/storage/logs:/log/nginx
     networks:
       - frontend
-      - backend
+  cron:
+    build: cron
+    volumes:
+      - ${APPLICATION}:/www
+      - ${APPLICATION}/storage/logs:/var/log
+    networks:
+      - frontend
+  supervisor:
+    build: supervisor
+    volumes:
+      - ${APPLICATION}:/www
+      - ${APPLICATION}/storage/logs:/var/log
+    networks:
+      - frontend
+
 networks:
   frontend:
     driver: "bridge"
-  backend:
-    driver: "bridge"
+#  backend:
+#    driver: "bridge"
 
 
