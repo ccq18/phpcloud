@@ -21,20 +21,20 @@ services:
       - ${APPLICATION}/storage/logs:/log/nginx
     networks:
       - frontend
-  cron:
-    build: cron
-    volumes:
-      - ${APPLICATION}:/www
-      - ${APPLICATION}/storage/logs:/var/log
-    networks:
-      - frontend
-  supervisor:
-    build: supervisor
-    volumes:
-      - ${APPLICATION}:/www
-      - ${APPLICATION}/storage/logs:/var/log
-    networks:
-      - frontend
+#  cron:
+#    build: cron
+#    volumes:
+#      - ${APPLICATION}:/www
+#      - ${APPLICATION}/storage/logs:/var/log
+#    networks:
+#      - frontend
+#  supervisor:
+#    build: supervisor
+#    volumes:
+#      - ${APPLICATION}:/www
+#      - ${APPLICATION}/storage/logs:/var/log
+#    networks:
+#      - frontend
 
 networks:
   frontend:
