@@ -19,6 +19,8 @@ services:
     volumes:
       - ${APPLICATION}:/www
       - ${APPLICATION}/storage/logs:/log/nginx
+    depends_on:
+      - fpm
     networks:
       - frontend
   cron:

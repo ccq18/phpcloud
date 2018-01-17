@@ -21,6 +21,8 @@ services:
       - ${APPLICATION}/storage/logs:/log/nginx
     networks:
       - frontend
+    depends_on:
+      - fpm
   cron:
     build: cron
     volumes:
