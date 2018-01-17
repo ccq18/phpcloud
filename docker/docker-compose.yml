@@ -1,19 +1,19 @@
 version: '3'
 services:
   cli:
-    image: "ccq18/php-cli:7.1"
+    image: "ccq18/php-cli:7.1-v1"
     volumes:
       - ${APPLICATION}:/www
     networks:
       - frontend
   fpm:
-    image: "ccq18/php-fpm:7.1"
+    image: "ccq18/php-fpm:7.1-v1"
     volumes:
       - ${APPLICATION}:/www
     networks:
       - frontend
   nginx:
-    image: "ccq18/nginx"
+    image: "ccq18/nginx:v1"
     ports:
       - "${PORT}:80"
     volumes:

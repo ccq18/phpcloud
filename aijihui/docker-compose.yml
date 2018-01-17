@@ -1,45 +1,45 @@
 version: '3'
 services:
   cli:
-    build:
-      context: ../docker/cli
-      args:
-        PHP_OTHER_EXT:
-        PHP_CORE_EXT:
-        PHP_INSTALL_GD:
+    image: "ccq18/php-cli:7.1-v1"
     volumes:
       - ${APPLICATION}:/www
     networks:
       - frontend
-      - backend
-  php:
-    build:
-      context: ../docker/php
-      args:
-        PHP_OTHER_EXT:
-        PHP_CORE_EXT:
-        PHP_INSTALL_GD:
+  fpm:
+    image: "ccq18/php-fpm:7.1-v1"
     volumes:
       - ${APPLICATION}:/www
-#      - ../:/www
-#      - ./conf:/usr/local/etc/php
-#      - ./logs:/phplogs
     networks:
       - frontend
-      - backend
   nginx:
-    build: ../docker/nginx
+    image: "ccq18/nginx:v1"
     ports:
       - "${PORT}:80"
     volumes:
       - ${APPLICATION}:/www
+      - ${APPLICATION}/storage/logs:/log/nginx
     networks:
       - frontend
-      - backend
+  cron:
+    build: cron
+    volumes:
+      - ${APPLICATION}:/www
+      - ${APPLICATION}/storage/logs:/var/log
+    networks:
+      - frontend
+  supervisor:
+    build: supervisor
+    volumes:
+      - ${APPLICATION}:/www
+      - ${APPLICATION}/storage/logs:/var/log
+    networks:
+      - frontend
+
 networks:
   frontend:
     driver: "bridge"
-  backend:
-    driver: "bridge"
+#  backend:
+#    driver: "bridge"
 
 
