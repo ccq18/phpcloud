@@ -98,7 +98,9 @@ $app->configure('database');
 | can respond to, as well as the controllers that may handle them.
 |
 */
-
+$app->routeMiddleware([
+    'check_pwd'=>App\Http\Middleware\CheckPwd::class
+]);
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {

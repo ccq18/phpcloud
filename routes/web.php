@@ -10,16 +10,30 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->post('/services/register','IndexController@register');
-$router->get('/services','IndexController@allServices');
-$router->get('/services/{serviceName}','IndexController@service');
-$router->get('/',function (){
-    return 'lumen in docker:'.__DIR__;
+//['middleware' => 'auth'],
+//$router->group(['middleware' => 'auth'], function () use ($app) {
+//    $router->get('/', function ()    {
+//        // Uses Auth Middleware
+//    });
+//
+//    $router->get('user/profile', function () {
+//        // Uses Auth Middleware
+//    });
+//});
+$router->group(['middleware'=>'check_pwd'],function () use ($router) {
+    $router->post('/services/register','IndexController@register');
+    $router->get('/services','IndexController@allServices');
+    $router->get('/services/{serviceName}','IndexController@service');
+    $router->get('/',function (){
+        return 'lumen in docker:'.__DIR__;
+    });
+    $router->get('/info',function (){
+        phpinfo();
+        return '';
+    });
 });
-$router->get('/info',function (){
-    phpinfo();
-    return '';
-});
+
+
 //define('LOG_FILE',base_path('storage/logs/log_file.log'));
 //define('LOG_ERROR',base_path('storage/logs/log_error.log'));
 //
