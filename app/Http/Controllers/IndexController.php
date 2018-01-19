@@ -62,6 +62,7 @@ class IndexController extends Controller
         Service::all()->map(function (Service $s, $key) use (&$services) {
             $services[$key] = $s->getServers(Service::ACTIVE);
         });
+
         return $services;
     }
 
@@ -95,6 +96,7 @@ class IndexController extends Controller
                 'status' => Service::ACTIVE
             ]
         ];
+        return $s;
 
     }
 }
