@@ -11,4 +11,4 @@ $s = str_replace(
     $s
 );
 $rs = file_put_contents(ROOT_PATH . '/.env', $s);
-var_dump($s, ROOT_PATH . '/.env', $s, $rs);
+var_dump(    [$centerIp, $centerPort, $centerPwd]);
