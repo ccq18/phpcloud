@@ -10,4 +10,6 @@ $s = str_replace(
     ['{CENTER_HOST_VALUE}', '{CENTER_PORT_VALUE}', '{CENTER_PWD_VALUE}'],
     [$centerIp, $centerPort, $centerPwd],
     $s);
+
 $rs = file_put_contents(ROOT_PATH . '/.env', $s);
+var_dump(    [$centerIp, $centerPort, $centerPwd]);
